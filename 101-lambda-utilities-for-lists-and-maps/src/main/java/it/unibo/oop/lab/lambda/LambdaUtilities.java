@@ -1,11 +1,15 @@
 package it.unibo.oop.lab.lambda;
 
+import java.lang.foreign.Linker.Option;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -58,10 +62,11 @@ public final class LambdaUtilities {
      *         otherwise.
      */
     public static <T> List<Optional<T>> optFilter(final List<T> list, final Predicate<T> pre) {
-        /*
-         * Suggestion: consider Optional.filter
-         */
-        return null;
+        final List<Optional<T>> l = new ArrayList<>();
+        list.forEach(t -> {
+            l.add(Optional.of(t).filter(pre));
+        });
+        return l;
     }
 
     /**
@@ -76,11 +81,18 @@ public final class LambdaUtilities {
      * @return a map that groups into categories each element of the input list,
      *         based on the mapping done by the function
      */
-    public static <R, T> Map<R, Set<T>> group(final List<T> list, final Function<T, R> op) {
-        /*
+      /*
          * Suggestion: consider Map.merge
          */
-        return null;
+    public static <R, T> Map<R, Set<T>> group(final List<T> list, final Function<T, R> op) {
+        final HashMap<R, Set<T>> map = new HashMap<R, Set<T>>();
+
+        list.forEach(t -> {
+            map.merge(op.apply(t),Set.of(t),);
+            //TODO:Complete merge function
+        });
+  
+        return map;
     }
 
     /**
@@ -101,6 +113,8 @@ public final class LambdaUtilities {
          *
          * Keep in mind that a map can be iterated through its forEach method
          */
+        
+
         return null;
     }
 
