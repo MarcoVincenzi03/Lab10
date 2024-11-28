@@ -1,6 +1,5 @@
 package it.unibo.oop.lab.lambda;
 
-import java.lang.foreign.Linker.Option;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -88,8 +85,10 @@ public final class LambdaUtilities {
         final HashMap<R, Set<T>> map = new HashMap<R, Set<T>>();
 
         list.forEach(t -> {
-            map.merge(op.apply(t),Set.of(t),);
-            //TODO:Complete merge function
+            map.merge(op.apply(t),new HashSet<>(Set.of(t)),(set,element) -> {
+                set.addAll(element);
+                return set;
+            });
         });
   
         return map;
@@ -114,8 +113,13 @@ public final class LambdaUtilities {
          * Keep in mind that a map can be iterated through its forEach method
          */
         
+        final HashMap<K, V> m = new HashMap<K, V>();
 
-        return null;
+        map.forEach((k,v) -> {
+            m.put(k, v.orElse(def.get()));
+        });
+
+        return m;
     }
 
     /**
